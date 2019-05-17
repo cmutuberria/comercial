@@ -1,0 +1,56 @@
+
+ <!-- <div class="five-zero-zero" *ngIf="this.preloadService.haveError"> -->
+ <div class="five-zero-zero" *ngIf="this.preloadService.haveError">
+   <div class="five-zero-zero-container">
+     <div class="error-code">Error</div>
+     <div class="error-message">Error Interno del Servidor...</div>
+     <div class="button-place">
+       <a (click)="this.preloadService.clearErrors()"
+         class="btn btn-default btn-lg waves-effect">Volver</a>
+     </div>
+   </div>
+ </div>
+
+ <!-- fin PRELOADER-->
+ <mz-navbar [navbarClass]="'red darken-4 white-text'" [hidden]="this.preloadService.haveError">
+  <a href="#" class="brand-logo ">Comercial Web</a>
+  <!-- <mz-navbar-item-container [align]="'right'">
+    <mz-navbar-item><a href="#">Sass</a></mz-navbar-item>
+    <mz-navbar-item><a href="#">Components</a></mz-navbar-item>
+    <mz-navbar-item><a routerLink="js">JavaScript</a></mz-navbar-item>
+  </mz-navbar-item-container> -->
+</mz-navbar>
+
+<!-- <div class="page-loader-wrapper" >
+  <div class="loader">
+    <div class="preloader-wrapper small active">
+      <div class="spinner-layer spinner-red-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+    <p>Esperar...</p>
+  </div>
+</div> -->
+<div class="page-loader-wrapper" *ngIf="this.preloadService.loading">
+  <div class="loader">
+    <mz-spinner [color]="'red'" [size]="'big'" >
+    </mz-spinner>
+    <p>Esperar...</p>
+  </div>
+</div>
+<div class="section" [hidden]="this.preloadService.haveError">
+  <router-outlet></router-outlet>
+  <!--<app-gateways></app-gateways>-->
+</div>
+<!-- FOOTER -->
+<footer class="section red darken-4 white-text page-footer" [hidden]="this.preloadService.haveError">
+  <p class="center">Desarrollado por Ing. Carlos Javier Pérez Mutuberría © 2019</p>
+</footer>

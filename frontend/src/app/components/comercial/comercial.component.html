@@ -1,0 +1,143 @@
+<div class="row">
+  <div class="col l12">
+    <mz-card [horizontal]="true" [hoverable]="true">
+      <mz-card-content>
+        <form [formGroup]="filtroForm" novalidate>
+          <div class="row">
+            <div class="col l10">
+              <mz-select-container class="col l3">
+                <select mz-select mz-validation required formControlName="anno_desde" id="anno_desde"
+                  [errorMessageResource]="errorMessageResources.anno_desde" [label]="'Año Desde'"
+                  [placeholder]="'Seleccionar Año'">
+                  <option *ngFor="let anno of annos; index as i" [value]="anno.anno">{{anno.anno}}</option>
+                </select>
+              </mz-select-container>
+              <mz-select-container class="col l3">
+                <select mz-select mz-validation required id="mes_desde" formControlName="mes_desde"
+                  [errorMessageResource]="errorMessageResources.mes_desde" [label]="'Mes Desde'"
+                  [placeholder]="'Seleccionar Mes'">
+                  <option *ngFor="let mes of meses; index as i" [value]="i+1">{{mes}}</option>
+                </select>
+              </mz-select-container>
+              <mz-select-container class="col l3">
+                <select mz-select mz-validation required id="anno_hasta" formControlName="anno_hasta"
+                  [errorMessageResource]="errorMessageResources.anno_hasta" [label]="'Año Hasta'"
+                  [placeholder]="'Seleccionar Año'">
+                  <option *ngFor="let anno of annos; index as i" [value]="anno.anno">{{anno.anno}}</option>
+                </select>
+              </mz-select-container>
+              <mz-select-container class="col l3">
+                <select mz-select mz-validation required id="mes_hasta" formControlName="mes_hasta"
+                  [errorMessageResource]="errorMessageResources.mes_hasta" [label]="'Mes Hasta'"
+                  [placeholder]="'Seleccionar Mes'">
+                  <option *ngFor="let mes of meses; index as i" [value]="i+1">{{mes}}</option>
+                </select>
+              </mz-select-container>
+              <mz-select-container class="col l12">
+                <select multiple mz-select mz-validation required id="consultores" formControlName="consultores"
+                  [errorMessageResource]="errorMessageResources.consultores" [label]="'Consultores'"
+                  [placeholder]="'Seleccionar Consultor'">
+                  <option *ngFor="let usuario of usuarios" [value]="usuario.co_usuario">{{usuario.no_usuario}}</option>
+                </select>
+              </mz-select-container>
+            </div>
+            <div class="col l2 ">
+              <ul class="collection no-border">
+                <li class="collection-item no-border">
+                  <button class="btn" (click)="relatorio(filtroForm)"
+                    [disabled]="filtroForm.invalid">Relatório</button>
+                </li>
+                <li class="collection-item no-border">
+                  <button class="btn" (click)="grafico(filtroForm)"
+                  [disabled]="filtroForm.invalid">Gráfico</button>
+                </li>
+                <li class="collection-item no-border">
+                  <button class="btn" (click)="pizza(filtroForm)"
+                    >Pizza</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </form>
+      </mz-card-content>
+
+    </mz-card>
+  </div>
+</div>
+<div class="row" *ngIf="mostrarRelatorio">
+  <div class="col l12">
+    <mz-card [horizontal]="true" [hoverable]="false">
+       <mz-card-title class="gray">
+        <strong>Relatório</strong>
+       </mz-card-title>
+      <mz-card-content> 
+        <mz-collapsible [mode]="'expandable'"
+          [popout]="true" *ngFor="let relatorioElement of relatorioList; index as i">
+          <mz-collapsible-item [active]="relatorioElement.relatorio.length>0">
+            <mz-collapsible-item-header>
+             <strong>{{relatorioElement.nombre}}</strong>
+            </mz-collapsible-item-header>
+            <mz-collapsible-item-body>
+              <table *ngIf="relatorioElement.relatorio.length>0" class="striped responsive-table">
+                <thead>
+                  <tr>
+                    <th>Período</th>
+                    <th>Receita Líquida</th>
+                    <th>Custo Fixo</th>
+                    <th>Comissão</th>
+                    <th>Lucro</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let relatorio of relatorioElement.relatorio">
+                    <td>{{relatorio.anno}}, {{meses[relatorio.mes-1]}}</td>
+                    <td>{{relatorio.receita_liquida}}</td>
+                    <td>{{relatorio.custo_fixo}}</td>
+                    <td>{{relatorio.comissao}}</td>
+                    <td>{{relatorio.Lucro}}</td>
+                  </tr>                  
+                </tbody>
+              </table>
+            </mz-collapsible-item-body>
+          </mz-collapsible-item>
+        </mz-collapsible>
+      </mz-card-content>
+    </mz-card>
+  </div>
+</div>
+<div class="row" *ngIf="mostrarGrafico">
+  <div class="col l12">
+    <mz-card [horizontal]="true" [hoverable]="false">
+      <mz-card-title class="gray">
+        <strong>Gráfico</strong>
+      </mz-card-title>
+      <mz-card-content>
+        <div style="display: block">
+          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [legend]="barChartLegend" [chartType]="barChartType">
+          </canvas>          
+        </div>
+      </mz-card-content>
+    </mz-card>
+  </div>
+  
+</div>
+<div class="row" *ngIf="mostrarPizza">
+  <div class="col l12">
+    <mz-card [horizontal]="true" [hoverable]="false">
+      <mz-card-title class="gray">
+        <strong>Pizza</strong>
+      </mz-card-title>
+      <mz-card-content>
+        <div style="display: block">
+          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [legend]="barChartLegend" [chartType]="barChartType">
+          </canvas>          
+        </div>
+      </mz-card-content>
+    </mz-card>
+  </div>
+  
+</div>
