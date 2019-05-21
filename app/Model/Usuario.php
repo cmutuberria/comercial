@@ -66,14 +66,14 @@ class Usuario extends Model
     }
     public function receita_liquida($fecha)
     {
-        $receita_liquida = DB::Select('select  
+        $receita_liquida = DB::Select( 'select  
             ROUND(sum(valor-(valor*total_imp_inc/100)),2) receita_liquida
             from cao_fatura f 
             join cao_os os on (f.co_os=os.co_os)
             where EXTRACT(YEAR_MONTH FROM f.data_emissao)= :fecha
             and os.co_usuario=:usuario
             group by EXTRACT(YEAR_MONTH FROM f.data_emissao)
-            order by f.data_emissao', ["fecha" => $fecha, "usuario" => $this->co_usuario]);
+            order by EXTRACT(YEAR_MONTH FROM f.data_emissao)', ["fecha" => $fecha, "usuario" => $this->co_usuario]);
         return $receita_liquida ? $receita_liquida[0]->receita_liquida : 0;
     }
     public function receita_liquida_date_interval($anno_desde, $mes_desde, $anno_hasta, $mes_hasta)
@@ -94,14 +94,14 @@ class Usuario extends Model
     }
     public function comissao($fecha)
     {
-        return DB::Select('select	
+        return DB::Select( 'select	
                 ROUND(sum((valor-(valor*total_imp_inc/100))*comissao_cn/100),2) comissao
                 from cao_fatura f 
                 join cao_os os on (f.co_os=os.co_os)
                 where EXTRACT(YEAR_MONTH FROM f.data_emissao) = :fecha
                 and os.co_usuario=:usuario
                 group by EXTRACT(YEAR_MONTH FROM f.data_emissao)
-                order by f.data_emissao', ["fecha" => $fecha, "usuario" => $this->co_usuario]);
+                order by EXTRACT(YEAR_MONTH FROM f.data_emissao)', ["fecha" => $fecha, "usuario" => $this->co_usuario]);
     }
     public function custo_fixo()
     {
