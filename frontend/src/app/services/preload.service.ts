@@ -13,13 +13,10 @@ export class PreloadService {
 
   fireLoading(){
     this.loading=true;
-    console.log("fire loading");
   }
 
   stopLoading(){
     this.loading=false;
-    console.log("Stop loading");
-
   }
   
   haveErrors(){

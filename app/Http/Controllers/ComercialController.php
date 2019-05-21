@@ -61,7 +61,7 @@ class ComercialController extends Controller
         EXTRACT(MONTH FROM f.data_emissao) mes from cao_fatura f 
             where EXTRACT(YEAR FROM f.data_emissao) BETWEEN :anno_desde and :anno_hasta
             and EXTRACT(MONTH FROM f.data_emissao) BETWEEN :mes_desde and :mes_hasta
-            order by f.data_emissao',
+            order by EXTRACT(YEAR_MONTH FROM f.data_emissao)',
       [
         "anno_desde" => $anno_desde, "mes_desde" => $mes_desde,
         "anno_hasta" => $anno_hasta, "mes_hasta" => $mes_hasta
